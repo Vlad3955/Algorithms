@@ -50,14 +50,13 @@ void chessBoard()
     {
         for ( j = 0; j < WIDTH; ++j)
         {
-           int randRes = rand() % 4;
-           if (randRes == 1)
+           if (i == 0 || j == 0)
            {
-               board[i][j] = 1;
+               board[i][j] = 0;
            }
            else
            {
-               board[i][j] = 0;
+               board[i][j] = (rand() % 5 == 1) ? 1 : 0;
            }
            printf("%5d", board[i][j]);
         }
@@ -70,11 +69,11 @@ void chessBoard()
 
 int routes(int x, int y)
 {
-        if (board[i][j] == 1 || x == 0 && y == 0)
+        if (x == 0 && y == 0 || board[y][x] == 1)
         {
             return 0;
         }
-        else if (x == 0 || y == 0 && board[i][j] == 0)
+        else if (x == 0 || y == 0)
         {
             return 1;
         }
@@ -91,11 +90,11 @@ int main()
     //printf("%d", expon(2, 10));
     //printf("%d", exponExtra(2, 5));
     chessBoard();
-    const int sizeX = 5;
-    const int sizeY = 5;
-    for (int y = 0; y < sizeY; ++y)
+    //const int sizeX = 5;
+    //const int sizeY = 5;
+    for (int y = 0; y < HEIGHT; ++y)
     {
-         for (int x = 0; x < sizeX; ++x)
+         for (int x = 0; x < WIDTH; ++x)
          {
              printf("%5d", routes(x, y));
          }
