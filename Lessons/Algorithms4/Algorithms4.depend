@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1639320530 source:c:\geekbrains\practice\c\algorithms4\main.c
+	<stdio.h>
+	<stdlib.h>
+
