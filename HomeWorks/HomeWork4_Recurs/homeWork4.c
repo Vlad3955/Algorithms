@@ -46,9 +46,9 @@ int i, j;
 void chessBoard()
 {
     srand(time(NULL));
-    for ( i = 0; i < HEIGHT; ++i)
+    for (i = 0; i < HEIGHT; ++i)
     {
-        for ( j = 0; j < WIDTH; ++j)
+        for (j = 0; j < WIDTH; ++j)
         {
            if (i == 0 || j == 0)
            {
