@@ -107,26 +107,10 @@ int median (int* a, int* b, int* c)
 
 void qsf(int* arr, int first, int last)
 {
-    int i = first;
-    int j = last;
-
-    if (arr[(last - first)] <= 10)
+    if (last > 10)
     {
-        int temp, pos;
-        for (int i = first; i <= last; ++i)
-        {
-           temp = arr[i];
-           pos = i - 1;
-           while (pos >= 0 && arr[pos] > temp)
-           {
-              arr[pos + 1] = arr[pos];
-              pos--;
-           }
-           arr[pos + 1] = temp;
-        }
-    }
-    else
-    {
+        int i = first;
+        int j = last;
         int x = median(&arr[first], &arr[(first + last) / 2], &arr[last]);
 
     do {
@@ -146,14 +130,29 @@ void qsf(int* arr, int first, int last)
         }
     } while (i <= j);
 
-    if (i < last)
-    {
-        qsf(arr, i, last);
+      if (i < last)
+      {
+          qsf(arr, i, last);
+      }
+      if (first < j)
+      {
+          qsf(arr, first, j);
+      }
     }
-    if (first < j)
+    else
     {
-        qsf(arr, first, j);
-    }
+       int temp, pos;
+        for (int i = first; i <= last; ++i)
+        {
+           temp = arr[i];
+           pos = i - 1;
+           while (pos >= 0 && arr[pos] > temp)
+           {
+              arr[pos + 1] = arr[pos];
+              pos--;
+           }
+           arr[pos + 1] = temp;
+        }
     }
 
 }
@@ -215,12 +214,12 @@ int main()
   setlocale(LC_ALL, "rus");
 
   // QUICKSORT and SORTINSERTS
-  const int SZ = 50;
+  const int SZ = 20;
   int arr[SZ];
   fillIntRandom(arr, SZ, 100);
   printIntArray(arr, SZ, 3);
-  //qsf(arr, 0, SZ - 1);
-  bucketSort(arr, SZ);
+  qsf(arr, 0, SZ - 1);
+  //bucketSort(arr, SZ);
   printIntArray(arr, SZ, 3);
 
   // QUICKSORT FAST
