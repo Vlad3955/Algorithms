@@ -78,6 +78,62 @@ void print2dIntArray(int** array, const int row, const int col, int offset) {
 }
 
 
+
+// QUICKSORT and QUICKSORT FAST
+
+
+
+void qs(int* arr, int first, int last)
+{
+    int i = first;
+    int j = last;
+
+    int x = arr[(first + last) / 2];
+
+    do {
+        while (arr[i] < x)
+        {
+            i++;
+        }
+        while (arr[j] > x)
+        {
+            j--;
+        }
+        if (i <= j)
+        {
+            swapInt(&arr[i], &arr[j]);
+            i++;
+            j--;
+        }
+    } while (i <= j);
+
+    if (i < last)
+    {
+        qs(arr, i, last);
+    }
+    if (first < j)
+    {
+        qs(arr, first, j);
+    }
+}
+
+// SORT INSERTS
+void sortInserts(int* arr, int len)
+{
+    int temp, pos;
+    for (int i = 1; i < len; ++i)
+    {
+        temp = arr[i];
+        pos = i - 1;
+        while (pos >= 0 && arr[pos] > temp)
+        {
+            arr[pos + 1] = arr[pos];
+            pos--;
+        }
+        arr[pos + 1] = temp;
+    }
+}
+
 // QUICKSORT FAST
 
 
@@ -107,11 +163,25 @@ int median (int* a, int* b, int* c)
 
 void qsf(int* arr, int first, int last)
 {
-    if (last > 10)
+    int i = first;
+    int j = last;
+
+    if (arr[(last - first)] <= 10)
     {
-        int i = first;
-        int j = last;
-        int x = median(&arr[first], &arr[(first + last) / 2], &arr[last]);
+        int temp, pos;
+        for (int i = first; i <= last; ++i)
+        {
+           temp = arr[i];
+           pos = i - 1;
+           while (pos >= 0 && arr[pos] > temp)
+           {
+              arr[pos + 1] = arr[pos];
+              pos--;
+           }
+           arr[pos + 1] = temp;
+        }
+    }
+      int x = median(&arr[first], &arr[(first + last) / 2], &arr[last]);
 
     do {
         while (arr[i] < x)
@@ -130,31 +200,14 @@ void qsf(int* arr, int first, int last)
         }
     } while (i <= j);
 
-      if (i < last)
-      {
-          qsf(arr, i, last);
-      }
-      if (first < j)
-      {
-          qsf(arr, first, j);
-      }
-    }
-    else
+    if (i < last)
     {
-       int temp, pos;
-        for (int i = first; i <= last; ++i)
-        {
-           temp = arr[i];
-           pos = i - 1;
-           while (pos >= 0 && arr[pos] > temp)
-           {
-              arr[pos + 1] = arr[pos];
-              pos--;
-           }
-           arr[pos + 1] = temp;
-        }
+        qs(arr, i, last);
     }
-
+    if (first < j)
+    {
+        qs(arr, first, j);
+    }
 }
 
 // BUCKETSORT
@@ -207,19 +260,60 @@ void bucketSort(int* arr, int len)
         }
 }
 
+// BUCKETSORT2
+void bucketSort2(int* arr, int len)
+{
+    const int max = len;
+    const int b = 10;
 
+    int buckets[b][max + 1];
+    for (int i = 0; i < b; ++i)
+    {
+        buckets[i][max] = 0;
+    }
+
+            for (int digit = 1; digit < 1000000000; digit *= 10)
+            {
+               for (int i = 0; i < max; ++i)
+               {
+               int d = (arr[i] / digit) % b;
+
+               /*
+               int counter = buckets[d][max];
+               buckets[d][counter] = arr[i];
+               counter++;
+               buckets[d][max] = counter;
+               */
+
+               // тоже что и закоментированый код
+               buckets[d][buckets[d][max]++] = arr[i];
+              }
+              int idx = 0;
+              for (int i = 0; i < b; ++i)
+              {
+                 for ( int j = 0; j < buckets[i][max]; ++j)
+                 {
+                     arr[idx++] = buckets[i][j];
+                 }
+                 //printf("%d ", arr[idx]);
+                 buckets[i][max] = 0;
+              }
+                //printf("\n");
+            }
+}
 
 int main()
 {
   setlocale(LC_ALL, "rus");
 
   // QUICKSORT and SORTINSERTS
-  const int SZ = 20;
+  const int SZ = 10;
   int arr[SZ];
   fillIntRandom(arr, SZ, 100);
   printIntArray(arr, SZ, 3);
-  qsf(arr, 0, SZ - 1);
-  //bucketSort(arr, SZ);
+  //sortInserts(arr, SZ);
+  //qsf(arr, 0, SZ - 1);
+  bucketSort(arr, SZ);
   printIntArray(arr, SZ, 3);
 
   // QUICKSORT FAST
