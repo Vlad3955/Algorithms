@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <locale.h>
 
 #define true 1 == 1
 #define false 1 != 1
@@ -39,33 +39,46 @@ void ins2 (int pr, int dat)
     Node *node = (Node*) malloc(sizeof(Node));
     node->dat = dat;
     node->pr = pr;
-
-        arr[tail++] = node;
-        items++;
+        if (items < SZ)
+        {
+            arr[tail++] = node;
+            items++;
+        }
+        else
+        {
+            printf("Is full \n");
+        }
 }
 
 
-
+// до урока были некоторые ошибки в коде,работал некорректно
 Node* rem2()
 {
     if (items == 0)
     {
+        printf("Is empty \n");
         return NULL;
     }
     else
     {
-       int i;
-       Node* min = arr[0];
-       for (i = head; i < tail; ++i)
+       int idx;
+       int min = arr[0];
+       for (int i = 0; i < items; ++i)
        {
-          if (arr[i]->pr < min->pr)
+          if (arr[i]->pr < min)
           {
-              min = arr[i];
+              min = arr[i]->pr;
+              idx = i;
           }
        }
-          Node *tmp = min;
-          min = NULL;
+          Node *tmp = arr[idx];
+          while (idx < items)
+          {
+              arr[idx] = arr[idx + 1];
+              idx++;
+          }
           items--;
+          tail--;
           return tmp;
     }
 }
@@ -99,17 +112,11 @@ void printQueue()
 int cursor = -1;
 T Stack[SIZE];
 
-boolean push(T dec)
+boolean push(T data)
 {
     if (cursor < SIZE)
     {
-        int mod, bin;
-        while (dec)
-        {
-            mod = dec % 2;
-            dec /= 2;
-            Stack[++cursor] = 10 * bin + mod;
-        }
+        Stack[++cursor] = data;
         return true;
     }
     else
@@ -132,10 +139,18 @@ T pop()
     }
 }
 
-
+void decBin(int num)
+{
+    while (num >= 1)
+    {
+        push(num % 2);
+        num /= 2;
+    }
+}
 
 int main()
 {
+  setlocale(LC_ALL, "rus");
   // Task1
   /*
   init();
@@ -159,9 +174,9 @@ int main()
   }
   printQueue();
   */
-
+  // Почемуто заканчивает с ошибкой когда таск 1 раскоменчен ошибку
   // Task2
-  push(61);
+  decBin(61);
   while (cursor != -1)
   {
       printf("%d ", pop());
