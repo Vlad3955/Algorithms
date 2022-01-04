@@ -88,6 +88,82 @@ void printNode(Node* n)
     printf("[%d] ", n->dat);
 }
 
+// Задача сделана с применением преподавательского кода
+// Task1
+#define T char
+boolean pushOneLinkStack(List *stack, T value) {
+    Node *tmp = (Node*) malloc(sizeof(Node));
+    if (tmp == NULL) {
+        printf("Stack overflow \n");
+        return false;
+    }
+    tmp->dat = value;
+    tmp->next = stack->head;
+
+    stack->head = tmp;
+    stack->size++;
+    return true;
+}
+T popOneLinkStack(List *stack) {
+    if (stack->size == 0) {
+        printf("Stack is empty \n");
+        return -1;
+    }
+    Node *tmp = stack->head;
+    T data = stack->head->dat;
+    stack->head = stack->head->next;
+    free(tmp);
+    stack->size--;
+    return data;
+}
+
+
+
+#define VARIANTS 3
+int braceCorrect(char* braceExpr)
+{
+    char braces[][2] = {{'(', ')'},{'{', '}'},{'[', ']'}};
+    List *braceStack = (List*) malloc(sizeof(List));
+    init(braceStack);
+    int countIdx = 0;
+    while (*braceExpr != '\0')
+    {
+        for (int i = 0; i < VARIANTS; ++i)
+        {
+            if (*braceExpr == braces[i][0])
+            {
+                pushOneLinkStack(braceStack, i);
+            }
+        }
+        for (int i = 0; i < VARIANTS; ++i)
+        {
+            if (*braceExpr == braces[i][1])
+            {
+                if (braceStack->size == 0)
+                {
+                    return countIdx;
+                }
+                if (i == braceStack->head->dat)
+                {
+                    popOneLinkStack(braceStack);
+                }
+                else
+                {
+                    return countIdx;
+                }
+            }
+        }
+        braceExpr++;
+        countIdx++;
+    }
+    if (braceStack->size != 0)
+    {
+        return braceStack->head->dat;
+    }
+    return -1;
+}
+
+
 // Task2
 void copyList(List* lst, List* lst2)
 {
@@ -151,6 +227,13 @@ void printList(List* lst)
 
 int main()
 {
+  // Task 1
+  printf(") : %d \n", braceCorrect(")"));
+  printf("( : %d \n", braceCorrect("("));
+  printf("[2/{5*(4+7)}] : %d \n", braceCorrect("[2/{5*(4+7)}]"));
+
+  // Task 2 & 3
+  /*
   List* lst = (List*) malloc(sizeof(List));
   init(lst);
   ins(lst, 1);
@@ -166,6 +249,7 @@ int main()
   printList(lst2);
   int x = is_Sort(lst);
   printf("%s", x ? "true" : "false");
+  */
 
   return 0;
 }
