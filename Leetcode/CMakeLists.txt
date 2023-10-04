@@ -27,5 +27,5 @@ set(BUILD_SHARED_LIBS OFF)
 
 #file(GLOB lessons LIST_DIRECTORIES true "l[1-9]")
 add_subdirectory(Contains_Duplicate_217)
-#add_subdirectory(udp_server)
-#add_subdirectory(socket_wrap)
+add_subdirectory(Valid_Anagram_242)
+add_subdirectory(Product_Of_Array_Except_Self_238)

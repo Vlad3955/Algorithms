@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(con_dup_217)
+project(val_anagram_242)
 
 set(${PROJECT_NAME}_SRC main.cpp)
 
